@@ -1,20 +1,70 @@
-<<<<<<< HEAD
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
 # my-canvas
->>>>>>> 0a51aa9726d90d153a5ce0a449b2d3a035c33542
+
+A browser-based design canvas built with React + Vite. Think of it as a stripped-down Figma — you can drop shapes and text onto a canvas, move things around, resize them, and tweak properties without leaving the page.
+
+Built this as a frontend challenge to get comfortable with drag interactions, ref-based mouse tracking, and undo/redo state management without reaching for a library.
+
+---
+
+## What it does
+
+- Add rectangles, circles, text blocks, and image placeholders to a canvas
+- Drag elements freely — positions snap to a 10px grid
+- Resize from any of the 8 handles (corners + edges)
+- Click to select, see a properties panel update in real time
+- Layers panel on the right shows stacking order
+- Undo / redo with full history
+- Export the canvas as a PNG
+
+---
+
+## Keyboard shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Delete` / `Backspace` | Remove selected element |
+| `Ctrl + Z` | Undo |
+| `Ctrl + Y` | Redo |
+| `Ctrl + D` | Duplicate selected |
+
+---
+
+## Running locally
+
+```bash
+git clone https://github.com/VGAJI469/my-canvas.git
+cd my-canvas
+npm install
+npm run dev
+```
+
+Opens at `http://localhost:5173`
+
+---
+
+## Stack
+
+- React 18 (hooks only, no external state lib)
+- Vite
+- Plain CSS-in-JS for styling
+- html2canvas for PNG export
+- Deployed on Vercel
+
+---
+
+## How the drag system works
+
+Mouse events are tracked through refs rather than state — this avoids re-renders on every pixel of movement. On `mousedown` we record the cursor start position and the element's original coordinates. On `mousemove` we calculate the delta from the origin (not incrementally) to prevent drift, then snap to grid. On `mouseup` we commit the final position to history.
+
+Resize works the same way, except when dragging a left or top handle we also shift the element's X/Y position to keep the opposite edge anchored.
+
+---
+
+## Folder structure
+
+```
+src/
+└── App.jsx    — everything lives here (canvas, panels, drag logic)
+```
+
+Kept it as a single file since the scope didn't warrant splitting. Would refactor into separate components if this grew further.
